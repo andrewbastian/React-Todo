@@ -1,10 +1,7 @@
 import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList'
-class App extends React.Component {
-  // you will need a place to store your state in this component.
-  // design `App` to be the parent component of your application.
-  // this component is going to take care of state, and any change handlers you need to work with your state
+
 const listItems = [
   {
   data: 'Finish this project',
@@ -18,6 +15,12 @@ const listItems = [
 }
 ]
 
+class App extends React.Component {
+  // you will need a place to store your state in this component.
+  // design `App` to be the parent component of your application.
+  // this component is going to take care of state, and any change handlers you need to work with your state
+
+
   constructor() {
     super()
     this.state={
@@ -26,8 +29,32 @@ const listItems = [
       display: listItems
     }
   }
+  toggleData = id => {
+  this.setState({
+    toDo: this.state.toDo.map(data => {
+      if (data.id === id) {
+        return {
+          ...data,
+          doneX: !data.doneX
+          };
+        } else {
+        return data;
+      }
+    })
+  });
+}
+
 addData = dataName =>{
-  const newData = {}
+  const newData = {
+    data: dataName,
+      id: Date.now(),
+      doneX: false
+  }
+  this.setState({
+  toDo: [...this.state.toDo, newData],
+  display: [...this.state.toDo, newData],
+
+});
 }
 
   render() {
@@ -38,9 +65,11 @@ addData = dataName =>{
 
 
         <h1>Todo List</h1>
-        <TodoList/>
+        <TodoList
+            display={this.state.display}
+          />
         <h2>Add Item</h2>
-        <TodoForm />
+        <TodoForm  addData ={this.addData} />
 
 
 

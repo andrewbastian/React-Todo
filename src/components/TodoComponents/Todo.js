@@ -2,12 +2,12 @@ import React from "react";
 
 const Todo = props => {
   return (
-    <div
-      onClick={props.onClick}
-      className={`item${props.item.doneX ? " doneX" : ""}`}
+    <li
+      onClick={() => props.toggleData(props.data.id)}
+      className={`item${props.data.doneX ? " doneX" : "data"}`}
     >
-      <p>{props.item.name}</p>
-    </div>
+      <p>{props.data.data}</p>
+    </li>
   );
 };
 
