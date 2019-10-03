@@ -16,6 +16,10 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap'
   },
+  addItemTextField:{
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
   dense: {
     marginTop: theme.spacing(2)
   },
@@ -46,9 +50,13 @@ class TodoForm extends React.Component {
       addItemTextField,
       addData
     } = this.props;
-    return (<div className={classes.root}>
+    return (
+
+      <div className={classes.root}>
+
       <AppBar position="static">
         <Toolbar>
+
           <Formik onSubmit={(values, {setSubmitting}) => {
       setTimeout(() => {
         setSubmitting(false);
@@ -56,18 +64,20 @@ class TodoForm extends React.Component {
       }, 500);
     }}
     render={({submitForm, isSubmitting, values, setFieldValue}) => (
-            <Form onSubmit={this.props.submitData} className={classes.container}>
+
+            <Form onSubmit={this.props.submitData}>
               <Field type="text" name="task" label="Add a task" component={addItemTextField}/>
               <Button type="submit" disabled={isSubmitting} onClick = {submitForm}> <AddIcon/></Button>
             </Form>
             )}
           />
           <Button onClick={this.props.clearItem}><DeleteIcon/>remove completed tasks</Button>
-        </Toolbar>
+
+      </Toolbar>
       </AppBar>
 
     </div>);
   }
 }
 
-export default withStyles(styles)(TodoForm);
+export default withStyles(styles, { withTheme: true })(TodoForm);

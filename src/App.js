@@ -4,18 +4,18 @@ import TodoList from './components/TodoComponents/TodoList'
 import { withStyles } from '@material-ui/core';
 import {Typography, Card} from '@material-ui/core';
 import MuiTextField from '@material-ui/core/TextField';
-import {Formik, Field, Form} from 'formik';
 import {
   fieldToTextField,
   TextFieldProps,
 } from 'formik-material-ui';
+
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
-  textField: {
+  MuiTextField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
@@ -52,6 +52,7 @@ class App extends React.Component {
       name: 'Andrew',
       toDo: listItems,
       completed: false,
+      // classes: styles(),
     }
     this.addData = this.addData.bind(this);
     this.clearItem = this.clearItem.bind(this);
@@ -121,7 +122,8 @@ submitData = e => {
     })
 };
 
-  render() {
+  render(props) {
+
     return (
       <div>
 
