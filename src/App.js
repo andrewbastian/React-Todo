@@ -1,15 +1,43 @@
 import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList'
+import { withStyles } from '@material-ui/core';
+import {Typography, Card} from '@material-ui/core';
+import MuiTextField from '@material-ui/core/TextField';
+import {Formik, Field, Form} from 'formik';
+import {
+  fieldToTextField,
+  TextField,
+  TextFieldProps,
+  Select,
+  Switch,
+} from 'formik-material-ui';
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  dense: {
+    marginTop: theme.spacing(2),
+  },
+  menu: {
+    width: 200,
+  },
+});
 
 const listItems = [
   {
-  data: 'Finish this project',
+  task: 'Finish this project',
   id: 123,
-  doneX: false
+  completed: false
 },
 {
-  data: 'Take a nap',
+  task: 'Take a nap',
   id: 124,
   completed: false
 }
@@ -24,31 +52,25 @@ class App extends React.Component {
   constructor() {
     super()
     this.state={
-      neme: 'Andrew',
+      name: 'Andrew',
       toDo: listItems,
-      display: listItems
+      display: listItems,
+      completed: false,
     }
-  }
-  toggleData = id => {
-  this.setState({
-    toDo: this.state.toDo.map(data => {
-      if (data.id === id) {
-        return {
-          ...data,
-          doneX: !data.doneX
-          };
-        } else {
-        return data;
-      }
-    })
-  });
-}
+    this.addData = this.addData.bind(this);
+    this.clearItem = this.clearItem.bind(this);
+    this.toggleData = this.toggleData.bind(this);
+    this.submitData = this.submitData.bind(this);
 
-addData = dataName =>{
+  }
+
+
+
+addData = taskName =>{
   const newData = {
-    data: dataName,
+    task: taskName,
       id: Date.now(),
-      doneX: false
+      completed: false
   }
   this.setState({
   toDo: [...this.state.toDo, newData],
@@ -56,20 +78,71 @@ addData = dataName =>{
 
 });
 }
+addItemTextField = (props: TextFieldProps) => (
+  <MuiTextField
+    {...fieldToTextField(props)}
+    onChange={event => {
+      event.preventDefault();
+      const {value} = event.target;
+      props.form.setFieldValue(
+        props.field.name,
+        value ? value.handleChanges() : ''
+      );
+    }}
+  />
+);
+
+clearItem= ()=>{
+  this.setState({
+    toDo:this.state.toDo.filter(task => !task.completed)
+  })
+}
+toggleData = id => {
+this.setState({
+  toDo: this.state.toDo.map(task => {
+    if (task.id === id) {
+      return {
+        ...task,
+        completed: !task.completed,
+
+        };
+      } else {
+      return task;
+    }
+  })
+});
+}
+handleChanges = e => {
+  e.preventDefault()
+    this.setState({
+        [e.target.name]: e.target.value
+    });
+}
+
+submitData = e => {
+    e.preventDefault();
+    this.props.addData(this.state.task);
+    this.setState({
+        task: ''
+    })
+};
 
   render() {
     return (
       <div>
-        <h2>Welcome to your Todo App!</h2>
 
-
-
-        <h1>Todo List</h1>
+        <Typography variant ='h2'>Welcome To Andrew's To-Do App!</Typography>
+          <TodoForm
+              addData ={this.addData}
+              clearItem = {this.clearItem}
+               />
+<Card>
+  <Typography variant ="h2" >Todo List</Typography>
         <TodoList
             display={this.state.display}
+            toggleData ={this.toggleData}
           />
-        <h2>Add Item</h2>
-        <TodoForm  addData ={this.addData} />
+</Card>
 
 
 
@@ -79,4 +152,4 @@ addData = dataName =>{
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
