@@ -1,7 +1,4 @@
-import React, {Component} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import MuiTextField from '@material-ui/core/TextField';
+import React from 'react';
 import {withStyles} from '@material-ui/core';
 import {Button} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,10 +15,6 @@ const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap'
-  },
-  MuiTextField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(2)
   },
   dense: {
     marginTop: theme.spacing(2)
@@ -51,17 +44,24 @@ class TodoForm extends React.Component {
     const {
       classes,
       addItemTextField,
-      submitForm
+      addData
     } = this.props;
     return (<div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Formik>
+          <Formik onSubmit={(values, {setSubmitting}) => {
+      setTimeout(() => {
+        setSubmitting(false);
+        addData(values.task);
+      }, 500);
+    }}
+    render={({submitForm, isSubmitting, values, setFieldValue}) => (
             <Form onSubmit={this.props.submitData} className={classes.container}>
               <Field type="text" name="task" label="Add a task" component={addItemTextField}/>
-              <Button type="submit" onClick = {submitForm}> <AddIcon/></Button>
+              <Button type="submit" disabled={isSubmitting} onClick = {submitForm}> <AddIcon/></Button>
             </Form>
-          </Formik>
+            )}
+          />
           <Button onClick={this.props.clearItem}><DeleteIcon/>remove completed tasks</Button>
         </Toolbar>
       </AppBar>

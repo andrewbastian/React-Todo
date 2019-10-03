@@ -7,10 +7,7 @@ import MuiTextField from '@material-ui/core/TextField';
 import {Formik, Field, Form} from 'formik';
 import {
   fieldToTextField,
-  TextField,
   TextFieldProps,
-  Select,
-  Switch,
 } from 'formik-material-ui';
 
 const styles = theme => ({
@@ -54,14 +51,13 @@ class App extends React.Component {
     this.state={
       name: 'Andrew',
       toDo: listItems,
-      display: listItems,
       completed: false,
     }
     this.addData = this.addData.bind(this);
     this.clearItem = this.clearItem.bind(this);
     this.toggleData = this.toggleData.bind(this);
     this.submitData = this.submitData.bind(this);
-
+    this.addItemTextField = this.addItemTextField.bind(this);
   }
 
 
@@ -74,8 +70,6 @@ addData = taskName =>{
   }
   this.setState({
   toDo: [...this.state.toDo, newData],
-  display: [...this.state.toDo, newData],
-
 });
 }
 addItemTextField = (props: TextFieldProps) => (
@@ -132,14 +126,14 @@ submitData = e => {
       <div>
 
         <Typography variant ='h2'>Welcome To Andrew's To-Do App!</Typography>
-          <TodoForm
+        <TodoForm
               addData ={this.addData}
               clearItem = {this.clearItem}
                />
 <Card>
   <Typography variant ="h2" >Todo List</Typography>
         <TodoList
-            display={this.state.display}
+            toDo={this.state.toDo}
             toggleData ={this.toggleData}
           />
 </Card>

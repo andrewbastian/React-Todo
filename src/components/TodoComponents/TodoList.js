@@ -18,7 +18,7 @@ render(props){
     return(
         <div className="toDo-list">
             <ul>
-                {this.props.display.map(task => (
+                {this.props.toDo.map(task => (
                     <Todo key={task.id} task={task} toggleData={this.props.toggleData} />
                 ))}
             </ul>
